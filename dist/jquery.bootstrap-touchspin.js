@@ -599,17 +599,22 @@
           value = 0;
         }
 
-        var initvalue = value,
-            boostedstep = _getBoostedStep();
+        var initvalue = value;
 
-        value = value + boostedstep;
+        if(typeof settings.upOnce === 'function') {
+          value = settings.upOnce(value);
+        }else {
+          var boostedstep = _getBoostedStep();
 
-        if (value > settings.max) {
-          value = settings.max;
-          originalinput.trigger('touchspin.on.max');
-          stopSpin();
+          value = value + boostedstep;
+
+          if (value > settings.max) {
+            value = settings.max;
+            originalinput.trigger('touchspin.on.max');
+            stopSpin();
+          }
         }
-
+        
         elements.input.val(Number(value).toFixed(settings.decimals));
 
         if (initvalue !== value) {
@@ -624,18 +629,23 @@
         if (isNaN(value)) {
           value = 0;
         }
+        
+        var initvalue = value;
 
-        var initvalue = value,
-            boostedstep = _getBoostedStep();
+        if(typeof settings.downOnce === 'function') {
+          value = settings.downOnce(value);
+        }else {
+          var boostedstep = _getBoostedStep();
 
-        value = value - boostedstep;
+          value = value - boostedstep;
 
-        if (value < settings.min) {
-          value = settings.min;
-          originalinput.trigger('touchspin.on.min');
-          stopSpin();
+          if (value < settings.min) {
+            value = settings.min;
+            originalinput.trigger('touchspin.on.min');
+            stopSpin();
+          }
         }
-
+        
         elements.input.val(value.toFixed(settings.decimals));
 
         if (initvalue !== value) {
